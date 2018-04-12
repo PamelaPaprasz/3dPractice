@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>D3 Practice</title>
+	<script src="http://d3js.org/d3.v3.min.js"></script>
+</head>
+<body>
+
+	<p>This is a paragraph</p>
+
+	<script type="text/javascript">
+
+		// var canvas = d3.select("body")
+  //             			.append("svg")
+  //                   .attr("width", 500)
+  //                   .attr("height", 500);
+
+    // var circle = canvas.append("circle")
+    //                     .attr("cx", 250)
+    //                     .attr("cy", 250)
+    //                     .attr("r", 50)
+    //                     .attr("fill", "red");
+
+    // var rect = canvas.append("rect")
+    //                   .attr("width", 100)
+    //                   .attr("height", 50);
+
+    // var line = canvas.append("line")
+    //                   .attr("x1", 0)
+    //                   .attr("y1", 100)
+    //                   .attr("x2", 400)
+    //                   .attr("y2", 400)
+    //                   .attr("stroke", "green")
+    //                   .attr("stroke-width", 10)
+
+    // BASIC DONUT
+    // var group = canvas.append("g")
+    //                   .attr("transform", "translate(100, 100)");
+    // var r = 100;
+    // var p = Math.PI * 2;
+
+    // var arc = d3.svg.arc()
+    //           .innerRadius(r - 20)
+    //           .outerRadius(r)
+    //           .startAngle(0)
+    //           .endAngle(p)
+
+    // group.append("path")
+    //       .attr("d", arc)
+
+
+    //DONUT CHART
+
+    var data = [10, 30, 40, 20];
+    var r = 300;
+
+    var color = d3.scale.ordinal()
+                .range(["#FB1", "#C0FFEE", "pink", '#BADA55', "orange"]);
+
+    var canvas = d3.select("body").append("svg")
+                    .attr("width", 1500)
+                    .attr("height", 1500);
+
+    var group = canvas.append("g")
+                .attr("transform", "translate(300, 300)");
+
+    var arc = d3.svg.arc()
+              .innerRadius(200)
+              .outerRadius(r);
+
+    var pie = d3.layout.pie()
+              .value(function (d) {return d; });
+
+    var arcs = group.selectAll(".arc")
+                .data(pie(data))
+                .enter()
+                .append("g")
+                .attr("class", "arc");
+
+    arcs.append("path")
+        .attr("d", arc)
+        .attr("fill", function(d) { return color(d.data) });
+
+    arcs.append("text")
+        .attr("transform", function (d) { return "translate(" + arc.centroid(d) + ")";})
+        .attr("text-anchor", "middle")
+        .attr("font-size", "1.5em")
+        .text(function (d) { return d.data; });
+
+	</script>
+</body>
+</html>
