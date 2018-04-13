@@ -3,10 +3,43 @@
 <head>
 	<title>D3 Practice</title>
 	<script src="http://d3js.org/d3.v3.min.js"></script>
+
+
+<!-- 
+STYLE TO DINAMIC PIE
+<style type="text/css">
+  @import url(https://fonts.googleapis.com/css?family=Open+Sans);
+  body {
+      width: 100%;
+      height: 100%;
+      font-family: Lora,"Helvetica Neue",Helvetica,Arial,sans-serif;
+      color: #fff;
+      background-color: #000;
+  }
+  path.color0 {
+      fill: #fff;
+  }
+  path.color1 {
+      fill: rgba(255,255,255,.3);
+  }
+  text {
+      font-size: 7em;
+      font-weight: 400;
+      line-height: 16em;
+      fill: #fff;
+  }
+</style> -->
+
 </head>
 <body>
 
-	<p>This is a paragraph</p>
+  <!-- GENERATED PIE CHART -->
+	<div id="pieChart"></div>
+
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/d3/4.7.2/d3.min.js"></script>
+    <script src="d3pie.min.js"></script>
+
+    <script src="./index.js"></script>
 
 	<script type="text/javascript">
 
@@ -49,44 +82,153 @@
     //       .attr("d", arc)
 
 
-    //DONUT CHART
+    //DONUT CHART WITH NO PRECENTAGE
+    // var data = [10, 30, 40, 20];
+    // var r = 300;
 
-    var data = [10, 30, 40, 20];
-    var r = 300;
+    // var color = d3.scale.ordinal()
+    //             .range(["#FB1", "#C0FFEE", "pink", '#BADA55', "orange"]);
 
-    var color = d3.scale.ordinal()
-                .range(["#FB1", "#C0FFEE", "pink", '#BADA55', "orange"]);
+    // var canvas = d3.select("body").append("svg")
+    //                 .attr("width", 1500)
+    //                 .attr("height", 1500);
 
-    var canvas = d3.select("body").append("svg")
-                    .attr("width", 1500)
-                    .attr("height", 1500);
+    // var group = canvas.append("g")
+    //             .attr("transform", "translate(300, 300)");
 
-    var group = canvas.append("g")
-                .attr("transform", "translate(300, 300)");
+    // var arc = d3.svg.arc()
+    //           .innerRadius(200)
+    //           .outerRadius(r);
 
-    var arc = d3.svg.arc()
-              .innerRadius(200)
-              .outerRadius(r);
+    // var pie = d3.layout.pie()
+    //           .value(function (d) {return d; });
 
-    var pie = d3.layout.pie()
-              .value(function (d) {return d; });
+    // var arcs = group.selectAll(".arc")
+    //             .data(pie(data))
+    //             .enter()
+    //             .append("g")
+    //             .attr("class", "arc");
 
-    var arcs = group.selectAll(".arc")
-                .data(pie(data))
-                .enter()
-                .append("g")
-                .attr("class", "arc");
+    // arcs.append("path")
+    //     .attr("d", arc)
+    //     .attr("fill", function(d) { return color(d.data) });
 
-    arcs.append("path")
-        .attr("d", arc)
-        .attr("fill", function(d) { return color(d.data) });
+    // arcs.append("text")
+    //     .attr("transform", function (d) { return "translate(" + arc.centroid(d) + ")";})
+    //     .attr("text-anchor", "middle")
+    //     .attr("font-size", "1.5em")
+    //     .text(function (d) { return d.data; });
 
-    arcs.append("text")
-        .attr("transform", function (d) { return "translate(" + arc.centroid(d) + ")";})
-        .attr("text-anchor", "middle")
-        .attr("font-size", "1.5em")
-        .text(function (d) { return d.data; });
 
+
+    //DONUT CHART WITH PRECENTAGE
+    // var data = [
+    //   {name: 'car service', count: 3, percentage: 2, color: '#FB1'},
+    //   {name: 'gift', count: 10, percentage: 8, color: '#C0FFEE'},
+    //   {name: 'furniture', count: 17, percentage: 15, color: 'pink'},
+    //   {name: 'tution fee', count: 47, percentage: 41, color: '#BADA55'},
+    //   {name: 'food', count: 35, percentage: 31, color: 'orange'},
+    // ];
+    
+    // var width = 1000,
+    // height = 1000,
+    // radius = 250;
+
+    // var arc = d3.svg.arc()
+    //   .outerRadius(radius - 40)
+    //   .innerRadius(140);
+
+    // var pie = d3.layout.pie()
+    //   .sort(null)
+    //   .value(function(d) {
+    //       return d.count;
+    //   });
+
+    // var svg = d3.select('body').append("svg")
+    //   .attr("width", width)
+    //   .attr("height", height)
+    //   .append("g")
+    //   .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
+
+    // var g = svg.selectAll(".arc")
+    //   .data(pie(data))
+    //   .enter().append("g");    
+
+    // g.append("path")
+    //   .attr("d", arc)
+    //   .style("fill", function(d,i) {
+    //     return d.data.color;
+    //   });
+
+    // g.append("text")
+    //   .attr("transform", function(d) {
+    //     var _d = arc.centroid(d);
+    //     _d[0] *= 1.5; //multiply by a constant factor
+    //     _d[1] *= 1.4; //multiply by a constant factor
+    //     return "translate(" + _d + ")";
+    //   })
+    //   .attr("dy", ".9em")
+    //   .style("text-anchor", "middle")
+    //   .text(function(d) {
+    //     // if(d.data.percentage < 8) {
+    //     //   return '';
+    //     // }
+    //     return  d. data.name + " " + d.data.percentage + '%';
+    //   });
+
+
+// DINAMIC PIE CHART
+// var duration = 1500,
+//     transition = 200,
+//     percent = 45,
+//     width = window.innerWidth - 20,
+//     height = window.innerHeight - 20;
+// var dataset = {
+//             lower: calcPercent(0),
+//             upper: calcPercent(percent)
+//         },
+//         radius = Math.min(width, height) / 3,
+//         pie = d3.layout.pie().sort(null),
+//         format = d3.format(".0%");
+// var arc = d3.svg.arc()
+//         .innerRadius(radius * .8)
+//         .outerRadius(radius);
+// var svg = d3.select("body").append("svg")
+//         .attr("width", width)
+//         .attr("height", height)
+//         .append("g")
+//         .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
+// var path = svg.selectAll("path")
+//                 .data(pie(dataset.lower))
+//                 .enter().append("path")
+//                 .attr("class", function (d, i) {
+//                     return "color" + i
+//                 })
+//                 .attr("d", arc)
+//                 .each(function (d) {
+//                     this._current = d;
+//                 });
+// var text = svg.append("text")
+//         .attr("text-anchor", "middle")
+//         .attr("dy", ".3em");
+// var progress = 0;
+// var timeout = setTimeout(function () {
+//     clearTimeout(timeout);
+//     path = path.data(pie(dataset.upper));
+//     path.transition().duration(duration).attrTween("d", function (a) {
+//         var i = d3.interpolate(this._current, a);
+//         var i2 = d3.interpolate(progress, percent)
+//         this._current = i(0);
+//         return function (t) {
+//             text.text(format(i2(t) / 100));
+//             return arc(i(t));
+//         };
+//     });
+// }, 200);
+// function calcPercent(percent) {
+//     return [percent, 100 - percent];
+// }
 	</script>
+}
 </body>
 </html>
